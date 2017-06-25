@@ -1,5 +1,5 @@
 var SpacebookApp = function () {
-
+  function saveState() {}
   var posts = [];
 
   var $posts = $(".posts");
@@ -60,12 +60,9 @@ var SpacebookApp = function () {
 
   var removePost = function (index) {
     $.ajax({
-      type: 'POST',
+      type: 'DELETE',
       dataType: 'json',
-      url: '/api/removePost',
-      data: {
-        _id: posts[index]['_id']
-      },
+      url: '/api/post/' + posts[index]['_id'],
       success: function (data) {
         posts.splice(index, 1);
         _renderPosts();
@@ -100,11 +97,7 @@ var SpacebookApp = function () {
     $.ajax({
       type: 'DELETE',
       dataType: 'json',
-      url: '/api/deleteComment',
-      data: {
-        _id: posts[postIndex]['_id'],
-        comment_id: posts[postIndex]['comments'][postIndex]['_id']
-      },
+      url: '/api/post/' + posts[postIndex]['_id'] + '/comment/' + posts[postIndex]['comments'][postIndex]['_id'],
       success: function (data) {
         posts[postIndex]
           .comments

@@ -34,16 +34,17 @@ app.post('/api/addPost', function (req, res) {
   });
 
 });
+
 // 3) to handle deleting a post
-app.post('/api/removePost', function (req, res) {
-  // res.send(req.body);
+app.delete('/api/post/:postid', function (req, res) {
   Post
-    .findByIdAndRemove(req.body["_id"], function (err, item) {
+    .findByIdAndRemove(req.params.postid, function (err, item) {
       if (err) 
         return res.send(err);
       res.send(item);
     })
 });
+
 // 4) to handle adding a comment to a post
 app.post('/api/addComment', function (req, res) {
   res.send(req.body);
@@ -61,17 +62,17 @@ app.post('/api/addComment', function (req, res) {
   });
 });
 // 5) to handle deleting a comment from a post
-app.delete('/api/deleteComment', function (req, res) {
+app.delete('/api/post/:postid/comment/:commentid', function (req, res) {
 
   Post
-    .findById(req.body['_id'], function (err, Post) {
+    .findById(req.params.postid, function (err, Post) {
       if (err) 
         return console.log(err);
       var currentPost = Post.comments;
       res.send(currentPost);
       Post
         .comments
-        .splice(req.body['comment_id'], 1);
+        .splice(req.params.commentid, 1);
       Post.save(function (err, updatedTank) {
         if (err) 
           return console.log(err);
